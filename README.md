@@ -1,3 +1,8 @@
+# react-surface-openvr
+
+fork of react-surface to render to graphics 2d textures destined for OpenVR IVR_Overlays
+
+----
 # react-surface
 A custom react renderer utilizing [yoga-layout](https://facebook.github.io/yoga/) 
 targeting [pixi.js](http://www.pixijs.com/). Tweens and colors are first class 

@@ -1,9 +1,9 @@
 {
-  "name": "react-surface",
+  "name": "react-surface-openvr",
   "version": "0.1.0",
   "description": "A custom react renderer utilizing facebook yoga targeting canvas/webgl",
   "author": "Kasper Sandin",
-  "repository": "https://github.com/ksandin/react-surface",
+  "repository": "https://github.com/kayteh/react-surface-openvr",
   "dependencies": {
     "@pixi/filter-drop-shadow": "^2.4.0",
     "bezier-easing": "2.0.3",

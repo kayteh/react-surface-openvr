@@ -20,7 +20,7 @@ export class SurfaceRenderer {
     this.reconciler.injectIntoDevTools({
       bundleType: 1, // 0 for PROD, 1 for DEV
       version: '0.1.0', // version for your renderer
-      rendererPackageName: 'react-surface', // package name
+      rendererPackageName: 'react-surface-openvr', // package name
       findFiberByHostInstance: this.store.findFiberByHostInstance.bind(this.store)
     });
 
