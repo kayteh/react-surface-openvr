@@ -1,10 +1,10 @@
-import * as React from 'react';
-import {interaction} from 'pixi.js';
-import * as Color from 'color';
-import {observer} from 'mobx-react/custom';
-import {tweenSugar} from './UISettings';
-import {grid} from './UISettings';
-import {Interactive} from './Interactive';
+import * as React from 'react'
+import {interaction} from 'pixi.js'
+import * as Color from 'color'
+import {observer} from 'mobx-react/custom'
+import {tweenSugar} from './UISettings'
+import {grid} from './UISettings'
+import {Interactive} from './Interactive'
 
 @observer
 export class Button extends React.Component<{
@@ -16,7 +16,7 @@ export class Button extends React.Component<{
       <Interactive style={styles.button} onClick={this.props.onClick}>
         {this.props.label}
       </Interactive>
-    );
+    )
   }
 }
 
@@ -27,6 +27,6 @@ const styles = {
       flexDirection: 'row',
       opacity: tweenSugar.press.toggle(1, 0.8, isActive),
       backgroundColor: tweenSugar.focus.toggle(Color.rgb('#267835'), Color.rgb('#3ea851'), isHovered)
-    } as SurfaceStyle;
+    } as SurfaceStyle
   }
-};
+}

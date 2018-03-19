@@ -1,6 +1,6 @@
-import * as React from 'react';
-import {IconWithLabel} from '../ui/IconWithLabel';
-import {Link} from '../ui/Link';
+import * as React from 'react'
+import {IconWithLabel} from '../ui/IconWithLabel'
+import {Link} from '../ui/Link'
 
 export const infoToasties = [
   <IconWithLabel icon={require('../assets/codenjoy-icon.jpg')}>
@@ -13,5 +13,5 @@ export const infoToasties = [
   <IconWithLabel icon={require('../assets/instagram-icon.png')}>
     I have instagram: <Link url="http://instagram.com/codenjoy">instagram.com/codenjoy</Link>
   </IconWithLabel>
-];
+]
 

@@ -1,4 +1,4 @@
-import { CandyNode } from "./CandyNode";
+import { CandyNode } from './CandyNode'
 
 export class CandyStyle {
   private owner?: CandyNode
@@ -49,7 +49,7 @@ export class CandyStyle {
   marginRight: SurfaceValueP = null
   marginTop: SurfaceValueP = null
 
-  get margins(): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
+  get margins (): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
     return [
       this.marginTop || this.margin || 0,
       this.marginRight || this.margin || 0,
@@ -64,7 +64,7 @@ export class CandyStyle {
   paddingRight: SurfaceValueP = null
   paddingTop: SurfaceValueP = null
 
-  get paddings(): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
+  get paddings (): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
     return [
       this.paddingTop || this.padding || 0,
       this.paddingRight || this.padding || 0,
@@ -79,7 +79,7 @@ export class CandyStyle {
   borderBottom: SurfaceValueP = null
   borderLeft: SurfaceValueP = null
 
-  get borders(): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
+  get borders (): [SurfaceValueP, SurfaceValueP, SurfaceValueP, SurfaceValueP] {
     return [
       this.borderTop || this.border || 0,
       this.borderRight || this.border || 0,

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import {LifecycleTransitionGroup, TransitionState} from './LifecycleTransitionGroup';
-import {Tween} from '../../../src/index';
+import * as React from 'react'
+import {LifecycleTransitionGroup, TransitionState} from './LifecycleTransitionGroup'
+import {Tween} from '../../../src/index'
 
 export class Crossfader extends React.Component<{
   children: React.ReactElement<any>
@@ -14,15 +14,15 @@ export class Crossfader extends React.Component<{
           </FadeTransition>
         ]}
       </LifecycleTransitionGroup>
-    );
+    )
   }
 }
 
 class FadeTransition extends React.Component {
-  opacity = new Tween(0);
+  opacity = new Tween(0)
 
   componentWillTransition (state: TransitionState) {
-    return this.opacity.toggle(0, 1, state === TransitionState.Entering);
+    return this.opacity.toggle(0, 1, state === TransitionState.Entering)
   }
 
   render () {
@@ -30,6 +30,6 @@ class FadeTransition extends React.Component {
       <surface position="absolute" opacity={this.opacity}>
         {this.props.children}
       </surface>
-    );
+    )
   }
 }

@@ -1,23 +1,23 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as webpack from 'webpack';
-import {HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin, NewModule} from 'webpack';
-import {BuildOptions} from './BuildOptions';
-import {without} from 'lodash';
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const AutoDllPlugin = require('autodll-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+import * as fs from 'fs'
+import * as path from 'path'
+import * as webpack from 'webpack'
+import {HotModuleReplacementPlugin, LoaderOptionsPlugin, NamedModulesPlugin, NewModule} from 'webpack'
+import {BuildOptions} from './BuildOptions'
+import {without} from 'lodash'
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const AutoDllPlugin = require('autodll-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 // NOTE webpack requires a default export
 export default async function webpackConfig (additionalOptions?: BuildOptions)  { // tslint:disable-line
   const options = {
     ...new BuildOptions(),
     ...additionalOptions
-  };
+  }
 
-  console.log('BuildOptions', JSON.stringify(options, null, 2));
+  console.log('BuildOptions', JSON.stringify(options, null, 2))
 
-  const sourceFolder = path.resolve(__dirname, 'src');
+  const sourceFolder = path.resolve(__dirname, 'src')
 
   const config: webpack.Configuration = {
     // What code to build and where to put it
@@ -106,16 +106,16 @@ export default async function webpackConfig (additionalOptions?: BuildOptions)  
       hot: options.hmr,
       hotOnly: options.hmr
     },
-  };
+  }
 
   // Loaders should only be applied to project sources
   for (const rule of (config.module as NewModule).rules) {
-    rule.exclude = /node_modules/;
+    rule.exclude = /node_modules/
   }
 
-  return config;
+  return config
 }
 
 function compact <T> (array: Array<T | false>) {
-  return array.filter((item) => !!item) as T[];
+  return array.filter((item) => !!item) as T[]
 }

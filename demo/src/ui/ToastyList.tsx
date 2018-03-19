@@ -1,8 +1,8 @@
-import * as React from 'react';
-import {ToastyItem} from './ToastyItem';
-import {observer} from 'mobx-react/custom';
-import {LifecycleTransitionGroup} from '../lib/LifecycleTransitionGroup';
-import {AppStateComponent} from '../AppStateComponent';
+import * as React from 'react'
+import {ToastyItem} from './ToastyItem'
+import {observer} from 'mobx-react/custom'
+import {LifecycleTransitionGroup} from '../lib/LifecycleTransitionGroup'
+import {AppStateComponent} from '../AppStateComponent'
 
 @observer
 export class ToastyList extends AppStateComponent<{style?: SurfaceStyle}> {
@@ -22,6 +22,6 @@ export class ToastyList extends AppStateComponent<{style?: SurfaceStyle}> {
           ))}
         </LifecycleTransitionGroup>
       </surface>
-    );
+    )
   }
 }

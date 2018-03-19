@@ -1,35 +1,35 @@
-import * as React from 'react';
-import {Toasty, ToastyState, ToastyType} from '../state/Toasty';
-import {commonStyles, tweenSugar} from './UISettings';
-import {observer} from 'mobx-react/custom';
-import {Crossfader} from '../lib/Crossfader';
-import {grid} from './UISettings';
-import {AppStateComponent} from '../AppStateComponent';
-import {autorun, action, observable, when} from 'mobx';
-import {TweenOptions} from '../../../src/lib/tween/TweenOptions';
-import {Howl} from 'howler';
+import * as React from 'react'
+import {Toasty, ToastyState, ToastyType} from '../state/Toasty'
+import {commonStyles, tweenSugar} from './UISettings'
+import {observer} from 'mobx-react/custom'
+import {Crossfader} from '../lib/Crossfader'
+import {grid} from './UISettings'
+import {AppStateComponent} from '../AppStateComponent'
+import {autorun, action, observable, when} from 'mobx'
+import {TweenOptions} from '../../../src/lib/tween/TweenOptions'
+import {Howl} from 'howler'
 
 @observer
 export class ToastyItem extends AppStateComponent<{
   index: number,
   toasty: Toasty
 }> {
-  static enterSound = new Howl({src: require('../assets/notice.wav')});
-  static presentSound = new Howl({src: require('../assets/in.wav')});
-  static exitSound = new Howl({src: require('../assets/out.wav')});
+  static enterSound = new Howl({src: require('../assets/notice.wav')})
+  static presentSound = new Howl({src: require('../assets/in.wav')})
+  static exitSound = new Howl({src: require('../assets/out.wav')})
 
-  private reactionDisposers: Array<() => void>;
-  @observable messageSize: Size = {width: 0, height: 0};
+  private reactionDisposers: Array<() => void>
+  @observable messageSize: Size = {width: 0, height: 0}
 
   tweens = {
     opacity: tweenSugar.slide.tween(0),
     translateY: tweenSugar.slide.tween(0, new TweenOptions({immediate: true, rounded: true})),
     translateX: tweenSugar.slide.tween(0, new TweenOptions({immediate: true, rounded: true})),
     width: tweenSugar.slide.tween(0, new TweenOptions({immediate: true, rounded: true}))
-  };
+  }
 
   async componentWillEnter () {
-    await this.tweens.opacity.to(1);
+    await this.tweens.opacity.to(1)
   }
 
   async componentWillExit () {
@@ -38,7 +38,7 @@ export class ToastyItem extends AppStateComponent<{
       this.tweens.translateX.promise,
       this.tweens.translateY.promise,
       this.tweens.opacity.to(0)
-    ]);
+    ])
   }
 
   componentWillMount () {
@@ -54,63 +54,63 @@ export class ToastyItem extends AppStateComponent<{
           this.messageSize
         )
       )
-    ];
+    ]
   }
 
   componentWillUnmount () {
     while (this.reactionDisposers.length) {
-      this.reactionDisposers.pop()();
+      this.reactionDisposers.pop()()
     }
   }
 
   tweenToState (state: ToastyState, containerBounds: Bounds, overlaySize: Size, contentSize: Size) {
-    const yDelta = overlaySize.height - containerBounds.top * 2;
-    const xDelta = overlaySize.width - containerBounds.right * 2;
-    const isTop = this.props.toasty.type === ToastyType.Top;
+    const yDelta = overlaySize.height - containerBounds.top * 2
+    const xDelta = overlaySize.width - containerBounds.right * 2
+    const isTop = this.props.toasty.type === ToastyType.Top
 
     const toastySize = {
       width: contentSize.width + toastyPadding * 2,
       height: Math.max(contentSize.height + toastyPadding * 2, defaultToastyHeight) + grid.gutter
-    };
+    }
 
-    this.tweens.width.to(toastySize.width);
+    this.tweens.width.to(toastySize.width)
 
-    const y = this.tweens.translateY;
-    const x = this.tweens.translateX;
+    const y = this.tweens.translateY
+    const x = this.tweens.translateX
     switch (state) {
       case ToastyState.Idle:
-        x.to((xDelta - contentSize.width) / 2);
-        y.to(yDelta + defaultToastyHeight);
-        break;
+        x.to((xDelta - contentSize.width) / 2)
+        y.to(yDelta + defaultToastyHeight)
+        break
       case ToastyState.Exclaiming:
-        x.to((xDelta + toastySize.width) / 2);
-        y.to(isTop ? -toastySize.height : yDelta);
-        break;
+        x.to((xDelta + toastySize.width) / 2)
+        y.to(isTop ? -toastySize.height : yDelta)
+        break
       case ToastyState.Presenting:
-        x.to((xDelta + toastySize.width) / 2);
-        y.to(isTop ? -toastySize.height : (yDelta - toastySize.height) / 2);
-        break;
+        x.to((xDelta + toastySize.width) / 2)
+        y.to(isTop ? -toastySize.height : (yDelta - toastySize.height) / 2)
+        break
       case ToastyState.Logging:
-        x.to(0);
-        y.to(this.props.index * (defaultToastyHeight + toastyPadding));
-        this.tweens.width.to(containerBounds.width);
-        break;
+        x.to(0)
+        y.to(this.props.index * (defaultToastyHeight + toastyPadding))
+        this.tweens.width.to(containerBounds.width)
+        break
       case ToastyState.Archived:
-        y.to(y.value - toastySize.height);
-        break;
+        y.to(y.value - toastySize.height)
+        break
     }
   }
 
   @action
   updateSize (messageSize: Size) {
-    this.messageSize = messageSize;
+    this.messageSize = messageSize
   }
 
   render () {
     const style = {
       ...this.tweens,
       ...styles.toasty
-    };
+    }
 
     return (
       <surface {...style} onClick={this.onClick.bind(this)}>
@@ -120,17 +120,17 @@ export class ToastyItem extends AppStateComponent<{
           </surface>
         </Crossfader>
       </surface>
-    );
+    )
   }
 
   onClick () {
-    this.props.toasty.progress();
+    this.props.toasty.progress()
   }
 }
 
-export const toastyPadding = grid.gutter;
-export const defaultToastyHeight = grid.ySpan(1);
-export const toastySpacing = toastyPadding;
+export const toastyPadding = grid.gutter
+export const defaultToastyHeight = grid.ySpan(1)
+export const toastySpacing = toastyPadding
 
 const styles = {
   toasty: {
@@ -145,4 +145,4 @@ const styles = {
     textAlign: 'center',
     overflow: 'hidden'
   } as SurfaceStyle
-};
+}

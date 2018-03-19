@@ -1,26 +1,26 @@
-import * as React from 'react';
-import {observer} from 'mobx-react/custom';
-import {SurfaceStore} from './SurfaceStore';
-import {observable, action} from 'mobx';
-import * as Color from 'color';
+import * as React from 'react'
+import {observer} from 'mobx-react/custom'
+import {SurfaceStore} from './SurfaceStore'
+import {observable, action} from 'mobx'
+import * as Color from 'color'
 
 @observer
 export class SurfaceDevTools extends React.Component<{
   store: SurfaceStore,
   style?: SurfaceStyle
 }> {
-  @observable isMinimized: boolean = true;
+  @observable isMinimized: boolean = true
 
   @action
   toggle () {
-    this.isMinimized = !this.isMinimized;
+    this.isMinimized = !this.isMinimized
   }
 
   render () {
     const style = {
       ...this.props.style,
       ...styles.devTools
-    };
+    }
 
     return (
       <surface {...style} onClick={() => this.toggle()}>
@@ -30,7 +30,7 @@ export class SurfaceDevTools extends React.Component<{
             <SurfaceStats store={this.props.store}/>
         }
       </surface>
-    );
+    )
   }
 }
 
@@ -38,7 +38,7 @@ const ToggleButton = () => (
   <surface>
     SurfaceDevTools
   </surface>
-);
+)
 
 @observer
 class SurfaceStats extends React.Component<{store: SurfaceStore}> {
@@ -48,7 +48,7 @@ class SurfaceStats extends React.Component<{store: SurfaceStore}> {
         surfaces: {this.props.store.surfaceCount}
         tweens: {this.props.store.tweenCount}
       </surface>
-    );
+    )
   }
 }
 
@@ -59,4 +59,4 @@ const styles = {
     padding: 10,
     borderRadius: 10
   }
-};
+}

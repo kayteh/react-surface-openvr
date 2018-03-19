@@ -1,17 +1,17 @@
-import * as React from 'react';
-import {fonts} from './assets/fonts';
-import * as Color from 'color';
-import {SurfaceStyleSheet} from '../../src/lib/SurfaceStyleSheet';
-import {Button} from './ui/Button';
-import {SurfaceDevTools} from '../../src/lib/SurfaceDevTools';
-import {Overlay} from './ui/Overlay';
-import {commonStyles, grid} from './ui/UISettings';
-import {appStateContext} from './AppStateComponent';
-import {AppState} from './state/AppState';
-import {observer} from 'mobx-react/custom';
-import {observable, computed, action} from 'mobx';
-import {HostToasty, ResubToasty, SubToasty} from './state/Toasty';
-import {GridOverlay} from './ui/GridOverlay';
+import * as React from 'react'
+import {fonts} from './assets/fonts'
+import * as Color from 'color'
+import {SurfaceStyleSheet} from '../../src/lib/SurfaceStyleSheet'
+import {Button} from './ui/Button'
+import {SurfaceDevTools} from '../../src/lib/SurfaceDevTools'
+import {Overlay} from './ui/Overlay'
+import {commonStyles, grid} from './ui/UISettings'
+import {appStateContext} from './AppStateComponent'
+import {AppState} from './state/AppState'
+import {observer} from 'mobx-react/custom'
+import {observable, computed, action} from 'mobx'
+import {HostToasty, ResubToasty, SubToasty} from './state/Toasty'
+import {GridOverlay} from './ui/GridOverlay'
 
 export const mockedMessages = [
   'You are looking mighty fine today, good sir!',
@@ -21,40 +21,40 @@ export const mockedMessages = [
   'The key to a continued heartbeat is to MOVE YOUR FEET.',
   'I give my life, on the steps... To heaven!',
   'My brethren fell to deaths cold embrace, Yet i stand alone against the countless horde!'
-];
+]
 
 @observer
 export class App extends React.Component<{state: AppState}> {
-  static childContextTypes = appStateContext;
+  static childContextTypes = appStateContext
   getChildContext () {
     return {
       state: this.props.state
-    };
+    }
   }
 
-  private behaviorDisposers: Array<() => void>;
+  private behaviorDisposers: Array<() => void>
 
-  @observable count = 10;
+  @observable count = 10
 
   @computed get text () {
-    return Array.from('x'.repeat(this.count)).join(' ');
+    return Array.from('x'.repeat(this.count)).join(' ')
   }
 
   componentWillMount () {
-    this.behaviorDisposers = this.props.state.initializeBehavior();
+    this.behaviorDisposers = this.props.state.initializeBehavior()
   }
 
   componentWillUnmount () {
-    this.behaviorDisposers.forEach((dispose) => dispose());
+    this.behaviorDisposers.forEach((dispose) => dispose())
   }
 
   @action
   offset (offset: number) {
-    this.count += offset;
+    this.count += offset
   }
 
   render () {
-    const {state} = this.props;
+    const {state} = this.props
     return (
       <surface {...styles.app}>
         <Overlay/>
@@ -65,7 +65,7 @@ export class App extends React.Component<{state: AppState}> {
           </React.Fragment>
         )}
       </surface>
-    );
+    )
   }
 }
 
@@ -91,7 +91,7 @@ const DevToolsMenu = ({state}: {state: AppState}) => (
     <Button label="Message" onClick={() => state.chatbox.generateMessage()}/>
     <Button label="GridOverlay" onClick={() => state.options.setEnableGridOverlay(!state.options.enableGridOverlay)}/>
   </surface>
-);
+)
 
 const styles = SurfaceStyleSheet.create({
   app: {
@@ -109,9 +109,9 @@ const styles = SurfaceStyleSheet.create({
   },
 
   toastyOverlay: commonStyles.dock
-});
+})
 
 function randomizeItem<T> (items: T[]) {
-  const randomIndex = Math.floor(Math.random() * (items.length) - 0.01);
-  return items[randomIndex];
+  const randomIndex = Math.floor(Math.random() * (items.length) - 0.01)
+  return items[randomIndex]
 }

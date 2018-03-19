@@ -1,5 +1,5 @@
-import { CandyLayout } from "./CandyLayout"
-import { CandyStyle } from "./CandyStyle"
+import { CandyLayout } from './CandyLayout'
+import { CandyStyle } from './CandyStyle'
 
 type MeasureFunc = (width: number) => Size
 
@@ -37,7 +37,7 @@ export class CandyNode {
   }
 
   removeChildren (): void {
-    for (let child of this.children) {
+    for (const child of this.children) {
       child.setParentNode(null)
       child.reset()
     }
@@ -75,7 +75,7 @@ export class CandyNode {
     }
 
     if (this.children.size > 0) {
-      for (let child of this.children) {
+      for (const child of this.children) {
         if (child == null) continue
         if (!this.calculated) child.markDirty()
         child.calculateLayout.call(child, width, height)
@@ -128,7 +128,7 @@ export class CandyNode {
     // flex measurements, only works if there's a parent to calculate from.
     if (this.parentNode != null) {
       const fu = this.parentNode.flexUnits
-      const cs = this.parentNode.children.size
+      // const cs = this.parentNode.children.size
       const pdim = this.parentNode.nodeDimensions
 
       // so.. this math is weird, so let's talk it out.
@@ -140,7 +140,7 @@ export class CandyNode {
       // i think basis width is calculating wrapping, unrelated to this part.
 
       const weight = this.style.flexGrow || 0
-      const factor = (weight > 0) ? weight/fu : 1
+      const factor = (weight > 0) ? weight / fu : 1
 
       // if we're doing row, we care about width, if not, we care about height.
       if (
@@ -180,7 +180,7 @@ export class CandyNode {
     // then we don't adjust. this is still useful info for flexShrink though.
     // 
     if (this.children.size > 0) {
-      for (let child of this.children) {
+      for (const child of this.children) {
         widthC += child.dimensions.width
         heightC += child.dimensions.height
       }
@@ -200,13 +200,14 @@ export class CandyNode {
     }
   }
 
-  get flexUnits(): number {
+  get flexUnits (): number {
     return Array.from(this.children).reduce(
-      (acc, val): number => 
-        acc + Math.max((val.style.flexGrow || 0), (val.style.flexShrink || 0)), 0)
+      (acc, val): number => acc + Math.max((val.style.flexGrow || 0), (val.style.flexShrink || 0)),
+      0
+    )
   }
 }
 
-function minmax(val: number, min: number, max: number): number {
+function minmax (val: number, min: number, max: number): number {
   return Math.max(Math.min(val, max), min)
 }

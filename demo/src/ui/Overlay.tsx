@@ -1,13 +1,13 @@
-import * as React from 'react';
-import {commonColors, commonStyles, grid, tweenSugar} from './UISettings';
-import {observer} from 'mobx-react/custom';
-import {duration} from 'moment';
-import {ToastyList} from './ToastyList';
-import {AppStateComponent} from '../AppStateComponent';
-import {Chatbox} from './Chatbox';
-import {StreamStore} from '../state/StreamStore';
-import {defaultToastyHeight, toastySpacing} from './ToastyItem';
-import {maxToastyLogSize} from '../state/ToastyStore';
+import * as React from 'react'
+import {commonColors, commonStyles, grid, tweenSugar} from './UISettings'
+import {observer} from 'mobx-react/custom'
+import {duration} from 'moment'
+import {ToastyList} from './ToastyList'
+import {AppStateComponent} from '../AppStateComponent'
+import {Chatbox} from './Chatbox'
+import {StreamStore} from '../state/StreamStore'
+import {defaultToastyHeight, toastySpacing} from './ToastyItem'
+import {maxToastyLogSize} from '../state/ToastyStore'
 
 @observer
 export class Overlay extends AppStateComponent {
@@ -42,17 +42,17 @@ export class Overlay extends AppStateComponent {
           </surface>
         </surface>
       </surface>
-    );
+    )
   }
 }
 
 @observer
 class StreamStats extends React.Component<{stream: StreamStore}> {
   render () {
-    const d = duration(this.props.stream.uptime);
+    const d = duration(this.props.stream.uptime)
     const uptimeString = [d.hours(), d.minutes(), d.seconds()]
       .map((value) => value.toString().padStart(2, '0'))
-      .join(':');
+      .join(':')
 
     return (
       <React.Fragment>
@@ -63,16 +63,16 @@ class StreamStats extends React.Component<{stream: StreamStore}> {
           {uptimeString} <surface {...styles.timeIcon}/>
         </surface>
       </React.Fragment>
-    );
+    )
   }
 }
 
-const commonPadding = grid.gutter * 3;
-const toastyBoxHeight = maxToastyLogSize * (defaultToastyHeight + toastySpacing);
+const commonPadding = grid.gutter * 3
+const toastyBoxHeight = maxToastyLogSize * (defaultToastyHeight + toastySpacing)
 const rightBounds = {
   width: grid.xSpan(3),
   marginLeft: commonPadding,
-};
+}
 
 const styles = {
   background: {
@@ -160,6 +160,6 @@ const styles = {
     return {
       ...commonStyles.dock,
       top: tweenSugar.slide.to(logSize * (defaultToastyHeight + toastySpacing)),
-    };
+    }
   }
-};
+}

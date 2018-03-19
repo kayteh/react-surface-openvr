@@ -1,19 +1,19 @@
-import * as React from 'react';
-import {observer} from 'mobx-react/custom';
-import {commonStyles, grid} from './UISettings';
-import {SurfaceStyleSheet} from '../../../src/lib/SurfaceStyleSheet';
-import * as Color from 'color';
-import {observable, action} from 'mobx';
+import * as React from 'react'
+import {observer} from 'mobx-react/custom'
+import {commonStyles, grid} from './UISettings'
+import {SurfaceStyleSheet} from '../../../src/lib/SurfaceStyleSheet'
+import * as Color from 'color'
+import {observable, action} from 'mobx'
 
 @observer
 export class GridOverlay extends React.Component {
-  @observable rows = grid.rows;
-  @observable columns = grid.columns;
+  @observable rows = grid.rows
+  @observable columns = grid.columns
 
   @action
   updateVisibleCells ({width, height}: Size) {
-    this.columns = Math.ceil((width - grid.paddingLeft - grid.paddingRight) / (grid.columnWidth + grid.gutterWidth));
-    this.rows = Math.ceil((height - grid.paddingTop - grid.paddingBottom) / (grid.rowHeight + grid.gutterHeight));
+    this.columns = Math.ceil((width - grid.paddingLeft - grid.paddingRight) / (grid.columnWidth + grid.gutterWidth))
+    this.rows = Math.ceil((height - grid.paddingTop - grid.paddingBottom) / (grid.rowHeight + grid.gutterHeight))
   }
 
   render () {
@@ -29,7 +29,7 @@ export class GridOverlay extends React.Component {
           ))}
         </surface>
       </surface>
-    );
+    )
   }
 }
 
@@ -59,12 +59,12 @@ const styles = SurfaceStyleSheet.create({
     marginRight: grid.gutter,
     marginBottom: grid.gutter
   }
-});
+})
 
 function count (n: number) {
-  const items = [];
+  const items = []
   for (let i = 0; i < n; i += 1) {
-    items.push(i);
+    items.push(i)
   }
-  return items;
+  return items
 }

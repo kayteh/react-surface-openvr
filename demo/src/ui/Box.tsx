@@ -1,44 +1,44 @@
-import * as React from 'react';
-import * as Color from 'color';
-import {observer} from 'mobx-react/custom';
-import {observable, action} from 'mobx';
-import {TweenSugar} from '../../../src/lib/tween/TweenSugar';
+import * as React from 'react'
+import * as Color from 'color'
+import {observer} from 'mobx-react/custom'
+import {observable, action} from 'mobx'
+import {TweenSugar} from '../../../src/lib/tween/TweenSugar'
 
 @observer
 export class Box extends React.Component<{
   properties: Array<{name: string, off: any, on: any}>
 }> {
-  @observable isOn = false;
-  private intervalId: any;
+  @observable isOn = false
+  private intervalId: any
 
   componentWillMount () {
-    this.intervalId = setInterval(this.toggle.bind(this), 1000);
+    this.intervalId = setInterval(this.toggle.bind(this), 1000)
   }
 
   componentWillUnmount () {
-    clearInterval(this.intervalId);
+    clearInterval(this.intervalId)
   }
 
   @action
   toggle () {
-    this.isOn = !this.isOn;
+    this.isOn = !this.isOn
   }
 
   render () {
-    const label = this.props.properties.map(({name}) => name).join(', ');
+    const label = this.props.properties.map(({name}) => name).join(', ')
     const style = this.props.properties.reduce(
       (style, {name, off, on}) => {
-        const steps = name.split('.');
-        const last = steps.splice(steps.length - 1, 1)[0];
-        let obj: any = style;
+        const steps = name.split('.')
+        const last = steps.splice(steps.length - 1, 1)[0]
+        let obj: any = style
         for (const step of steps) {
-          obj = obj[step] = (obj[step] || (obj[step] = {}));
+          obj = obj[step] = (obj[step] || (obj[step] = {}))
         }
-        obj[last] = TweenSugar.default.toggle(on, off, this.isOn);
-        return style;
+        obj[last] = TweenSugar.default.toggle(on, off, this.isOn)
+        return style
       },
       {}
-    );
+    )
 
     return (
       <surface {...Object.assign({}, styles.box, style)}>
@@ -46,7 +46,7 @@ export class Box extends React.Component<{
           {label}
         </surface>
       </surface>
-    );
+    )
   }
 }
 
@@ -73,4 +73,4 @@ const styles = {
     padding: 20,
     backgroundColor: Color.rgb('#0000ff').alpha(0.5)
   } as SurfaceStyle
-};
+}

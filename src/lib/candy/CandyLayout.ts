@@ -6,7 +6,7 @@ export class CandyLayout {
   public bottom: number 
   public right: number
 
-  static default(box = 1000, offset = 0): CandyLayout {
+  static default (box = 1000, offset = 0): CandyLayout {
     return new CandyLayout({
       width: box,
       height: box,

@@ -1,12 +1,12 @@
-import * as React from 'react';
-import {Box} from './Box';
-import * as Color from 'color';
+import * as React from 'react'
+import {Box} from './Box'
+import * as Color from 'color'
 
 export class Boxes extends React.Component {
   render () {
     return tests.map((properties, index) => (
       <Box key={index} properties={properties}/>
-    ));
+    ))
   }
 }
 
@@ -35,4 +35,4 @@ const tests = [
   [{name: 'minHeight', off: 0, on: 300}],
   [{name: 'maxWidth', off: 0, on: 150}],
   [{name: 'maxHeight', off: 0, on: 150}],
-];
+]

@@ -1,9 +1,9 @@
-import {interaction} from 'pixi.js';
+import {interaction} from 'pixi.js'
 
 type SurfaceEventInfo = {
   pixiNames: string[];
   isInteractive: boolean;
-};
+}
 
 // HACK needs to match event types in global.d.ts
 export const surfaceEvents: {[key: string]: SurfaceEventInfo} = {
@@ -15,37 +15,37 @@ export const surfaceEvents: {[key: string]: SurfaceEventInfo} = {
   onMouseLeave: {pixiNames: ['mouseout', 'touchend', 'touchendoutside'], isInteractive: true},
   onSizeChanged: {pixiNames: ['bogusEvent_size'], isInteractive: false},
   onBoundsChanged: {pixiNames: ['bogusEvent_bounds'], isInteractive: false}
-};
+}
 
-export const pixiEvents: {[key: string]: SurfaceEventInfo} = {};
+export const pixiEvents: {[key: string]: SurfaceEventInfo} = {}
 for (const surfaceEventName in surfaceEvents) {
-  const info = surfaceEvents[surfaceEventName];
+  const info = surfaceEvents[surfaceEventName]
   for (const pixiName of info.pixiNames) {
-    pixiEvents[pixiName] = info;
+    pixiEvents[pixiName] = info
   }
 }
 
 export function diffEventProps (prevProps: SurfaceProps, nextProps: SurfaceProps) {
-  const removed: {[key: string]: (e: interaction.InteractionEvent) => any} = {};
-  const added: {[key: string]: (e: interaction.InteractionEvent) => any} = {};
+  const removed: {[key: string]: (e: interaction.InteractionEvent) => any} = {}
+  const added: {[key: string]: (e: interaction.InteractionEvent) => any} = {}
   const changed: {[key: string]: [
     (e: interaction.InteractionEvent) => any,
     (e: interaction.InteractionEvent) => any
-  ]} = {};
+  ]} = {}
 
   for (const name in surfaceEvents) {
-    const prev = (prevProps as any)[name];
-    const next = (nextProps as any)[name];
+    const prev = (prevProps as any)[name]
+    const next = (nextProps as any)[name]
     if (prev && next) {
       if (prev !== next) {
-        changed[name] = [prev, next];
+        changed[name] = [prev, next]
       }
     } else if (prev && !next) {
-      removed[name] = prev;
+      removed[name] = prev
     } else if (!prev && next) {
-      added[name] = next;
+      added[name] = next
     }
   }
 
-  return {removed, added, changed};
+  return {removed, added, changed}
 }

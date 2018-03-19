@@ -1,1 +1,1 @@
-require('raf');
+require('raf')

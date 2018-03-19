@@ -1,6 +1,6 @@
-import {action, observable, computed} from 'mobx';
+import {action, observable, computed} from 'mobx'
 
-let idCounter = 0;
+let idCounter = 0
 
 export enum ToastyState {
   Idle,
@@ -16,49 +16,49 @@ export enum ToastyType {
 }
 
 export class Toasty {
-  id: number = idCounter += 1;
-  fullContent: any;
-  shortContent: any;
-  createdAt: Date = new Date();
-  type: ToastyType = ToastyType.Middle;
+  id: number = idCounter += 1
+  fullContent: any
+  shortContent: any
+  createdAt: Date = new Date()
+  type: ToastyType = ToastyType.Middle
 
-  @observable state = ToastyState.Idle;
+  @observable state = ToastyState.Idle
 
   get shouldBeLogged () {
-    return this.type !== ToastyType.Top;
+    return this.type !== ToastyType.Top
   }
 
   @computed get content () {
     if (this.state <= ToastyState.Exclaiming) {
-      return '!';
+      return '!'
     }
     if (this.state <= ToastyState.Presenting) {
-      return this.fullContent;
+      return this.fullContent
     }
-    return this.shortContent || this.fullContent;
+    return this.shortContent || this.fullContent
   }
 
   @action
   progress (to: ToastyState = this.state + 1) {
     if (!this.shouldBeLogged && to === ToastyState.Logging) {
-      this.state = to + 1;
-      return;
+      this.state = to + 1
+      return
     }
 
     if (to !== undefined) {
       if (to > this.state) {
-        this.state = to;
+        this.state = to
       }
     } else {
-      this.state += 1;
+      this.state += 1
     }
   }
 
   static compareAge (a: Toasty, b: Toasty) {
     if (a.createdAt === b.createdAt) {
-      return 0;
+      return 0
     }
-    return a.createdAt < b.createdAt ? -1 : 1;
+    return a.createdAt < b.createdAt ? -1 : 1
   }
 }
 
@@ -68,14 +68,14 @@ export class SubToasty extends Toasty {
     method: any,
     message: string
   ) {
-    super();
+    super()
 
-    this.fullContent = `${username} just subscribed!`;
+    this.fullContent = `${username} just subscribed!`
     if (message) {
-      this.fullContent += `\n"${message}"`;
+      this.fullContent += `\n"${message}"`
     }
 
-    this.shortContent = `Sub: ${username}`;
+    this.shortContent = `Sub: ${username}`
   }
 }
 
@@ -86,14 +86,14 @@ export class ResubToasty extends Toasty {
     message: string,
     months: number
   ) {
-    super();
+    super()
 
-    this.fullContent = `${username} just resubscribed (x${months})!`;
+    this.fullContent = `${username} just resubscribed (x${months})!`
     if (message) {
-      this.fullContent += `\n"${message}"`;
+      this.fullContent += `\n"${message}"`
     }
 
-    this.shortContent = `Resub: ${username} (x${months})`;
+    this.shortContent = `Resub: ${username} (x${months})`
   }
 }
 
@@ -103,9 +103,9 @@ export class HostToasty extends Toasty {
     viewers: number,
     autoHost: boolean
   ) {
-    super();
-    this.fullContent = `${username} just hosted with ${viewers} viewers!`;
-    this.shortContent = `Host: ${username} (x${viewers})`;
+    super()
+    this.fullContent = `${username} just hosted with ${viewers} viewers!`
+    this.shortContent = `Host: ${username} (x${viewers})`
   }
 }
 
@@ -113,9 +113,9 @@ export class InfoToasty extends Toasty {
   constructor (
     message: string,
   ) {
-    super();
-    this.fullContent = message;
-    this.shortContent = message;
-    this.type = ToastyType.Top;
+    super()
+    this.fullContent = message
+    this.shortContent = message
+    this.type = ToastyType.Top
   }
 }
