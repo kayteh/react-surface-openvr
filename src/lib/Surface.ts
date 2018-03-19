@@ -10,8 +10,9 @@ import {SurfaceBackground, SurfaceBorder, SurfaceImage} from './SurfaceEffects';
 import {SurfaceStore} from './SurfaceStore';
 import {DropShadowFilter} from '@pixi/filter-drop-shadow';
 import {commonColors} from './constants';
+import { CandyNode } from './candy';
 
-const yoga = require('yoga-layout');
+const yoga = require('../../../yogajs');
 
 const defaultTextStyle = new PIXI.TextStyle({});
 
@@ -36,7 +37,8 @@ export class Surface {
 
   public id: number;
   public isDestroyed: boolean;
-  public yogaNode: YogaNode;
+  public yogaNode?: YogaNode;
+  public candyNode: CandyNode;
   public parentNode?: Surface;
   public props: SurfaceProps = {};
   public textValue?: string;
@@ -48,10 +50,12 @@ export class Surface {
     container?: Container
   ) {
     this.root = root!;
-    this.yogaNode = yoga.Node.create();
+    // this.yogaNode = yoga.Node.create();
+    this.candyNode = new CandyNode();
 
     if (type === 'text') {
-      this.yogaNode.setMeasureFunc(this.measureText.bind(this));
+      // this.yogaNode.setMeasureFunc(this.measureText.bind(this));
+      this.candyNode.measureWith(this.measureText.bind(this));
       this.pixiText = new PIXI.Text();
       this.pixiContainer = this.pixiText;
     } else {
@@ -74,13 +78,16 @@ export class Surface {
       child.destroy();
     }
 
-    while (this.yogaNode.getChildCount()) {
-      this.yogaNode.removeChild(
-        this.yogaNode.getChild(0)
-      );
-    }
+    this.candyNode.removeChildren();
 
-    this.yogaNode.reset();
+    // while (this.yogaNode.getChildCount()) {
+    //   this.yogaNode.removeChild(
+    //     this.yogaNode.getChild(0)
+    //   );
+    // }
+
+    // this.yogaNode.reset();
+    this.candyNode.reset();
     this.pixiContainer.destroy();
     this.isDestroyed = true;
     this.root!.surfacesWithTweens.delete(this.id);
@@ -114,7 +121,8 @@ export class Surface {
   }
 
   getGlobalBounds () {
-    let {width, height} = this.yogaNode.getComputedLayout();
+    // let {width, height} = this.yogaNode.getComputedLayout();
+    let {width, height} = this.candyNode.computedLayout;
     width = width || 0;
     height = height || 0;
     return {
@@ -148,7 +156,8 @@ export class Surface {
     this.updateEvents(prevProps, this.props);
     this.updateTweenableProps(prevProps, this.props);
     this.cascadeTextStyleGetters(); // TODO only cascade on text style changes
-    this.updateYoga();
+    // this.updateYoga();
+    this.updateCandy();
   }
 
   updateEvents (prevProps: SurfaceProps, nextProps: SurfaceProps) {
@@ -247,7 +256,8 @@ export class Surface {
   }
 
   cascadeGlobalPosition (x: number = 0, y: number = 0) {
-    const {left, top} = this.yogaNode.getComputedLayout();
+    // const {left, top} = this.yogaNode.getComputedLayout();
+    const {left, top} = this.candyNode.computedLayout
     this.globalPosition = {
       x: x + left,
       y: y + top
@@ -262,6 +272,13 @@ export class Surface {
     for (const key in this.props) {
       const value = ((this.tweenableProps as any)[key] as Tween<any>).value;
       setYogaValue(this.yogaNode, key, value);
+    }
+  }
+
+  updateCandy () {
+    for (const key in this.props) {
+      const value = ((this.tweenableProps as any)[key] as Tween<any>).value;
+      this.candyNode.style.update(key, value)
     }
   }
 
@@ -320,14 +337,16 @@ export class Surface {
 
     if (this.pixiText) {
       if (this.pixiText.text !== this.textValue) {
-        this.yogaNode.markDirty();
+        // this.yogaNode.markDirty();
+        this.candyNode.markDirty();
         this.pixiText.text = this.textValue!;
       }
     }
   }
 
   updatePixi () {
-    const layout = this.yogaNode.getComputedLayout();
+    // const layout = this.yogaNode.getComputedLayout();
+    const layout = this.candyNode.computedLayout
 
     this.pixiContainer.rotation = this.tweenableProps.rotation.value || 0;
     this.pixiContainer.skew.set(
@@ -352,7 +371,7 @@ export class Surface {
     if (this.pixiText) {
       Object.assign(this.pixiText.style, this.cascadedTextStyle, {wordWrapWidth: layout.width});
       if (changes.size) { // TODO check if
-        this.yogaNode.markDirty();
+        this.candyNode.markDirty();
       }
     }
 
@@ -461,7 +480,8 @@ export class Surface {
 
     this.childContainer.addChild(child.pixiContainer);
 
-    this.yogaNode.insertChild(child.yogaNode, this.mutableChildren.length);
+    // this.yogaNode.insertChild(child.yogaNode, this.mutableChildren.length);
+    this.candyNode.addChild(child.candyNode)
 
     this.mutableChildren.push(child);
     child.parentNode = this;
@@ -477,7 +497,8 @@ export class Surface {
     let index = this.childContainer.getChildIndex(beforeChild.pixiContainer);
     this.childContainer.addChildAt(child.pixiContainer, index);
 
-    this.yogaNode.insertChild(child.yogaNode, index);
+    // this.yogaNode.insertChild(child.yogaNode, index);
+    this.candyNode.addChildAt(child.candyNode, index);
 
     index = this.mutableChildren.indexOf(beforeChild);
     this.mutableChildren.splice(index, 0, child);
@@ -495,7 +516,8 @@ export class Surface {
       throw new Error('Cannot remove child. Argument is not a child of this surface');
     }
 
-    this.yogaNode.removeChild(child.yogaNode);
+    // this.yogaNode.removeChild(child.yogaNode);
+    this.candyNode.removeChild(child.candyNode);
 
     this.childContainer.removeChild(child.pixiContainer);
 
@@ -566,10 +588,15 @@ export class SurfaceRoot extends Surface {
   }
 
   private applyLayout () {
-    this.yogaNode.calculateLayout(
+    // this.yogaNode.calculateLayout(
+    //   this.app.view.width,
+    //   this.app.view.height,
+    //   yoga.DIRECTION_LTR
+    // );
+
+    this.candyNode.calculateLayout(
       this.app.view.width,
-      this.app.view.height,
-      yoga.DIRECTION_LTR
+      this.app.view.height
     );
 
     this.cascadeGlobalPosition();
@@ -594,7 +621,8 @@ export class SurfaceRoot extends Surface {
     for (const surface of this.surfacesWithTweens.values()) {
       // HACK shouldn't have to check this, destroyed surfaces shouldn't be here
       if (!surface.isDestroyed) {
-        surface.updateYoga();
+        // surface.updateYoga();
+        surface.updateCandy();
         surface.updatePixi();
       }
     }

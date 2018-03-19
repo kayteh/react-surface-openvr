@@ -86,7 +86,11 @@ type YogaProps = {
   borderLeft?: SurfaceValueP;
   overflow?: 'visible' | 'hidden' | 'scroll';
   opacity?: SurfaceValue;
+  [x: string]: any
 };
+
+// renamed for brevity
+type LayoutProps = YogaProps
 
 type RenderProps = SurfaceTransform & {
   color?: IColor;

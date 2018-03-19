@@ -27,7 +27,7 @@
     "tween.js": "16.6.0",
     "twitch-api-v5": "2.0.2",
     "webfontloader": "1.6.28",
-    "yoga-layout": "1.8.0",
+    "yoga-layout": "file:../yogajs",
     "axios": "0.17.1",
     "howler": "2.0.7"
   },
@@ -69,8 +69,7 @@
   },
   "scripts": {
     "pre-commit": [
-      "lint",
-      "test"
+      "lint"
     ],
     "build": "webpack --config ./demo/webpack.config.ts --env.outputFolder ../dist --env.module commonjs",
     "dev-server": "webpack-dev-server --config ./demo/webpack.config.ts --env.index --env.cache --env.stats --env.debug --env.hmr --env.sourceMaps",

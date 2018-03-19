@@ -23,13 +23,6 @@ const renderer = new SurfaceRenderer(domNode);
 state.surface = renderer.store;
 state.options.setEnableDevTools(!options.live);
 
-const twitchClient = new TwitchClient({
-  clientID: options.clientID,
-  channel: options.channel
-});
-
-twitchClient.initialize(state.stream, state.chatbox, state.toasties);
-
 // Load global assets
 loadFonts({
   google: {families: Object.values(fonts)},

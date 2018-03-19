@@ -1,4 +1,4 @@
-const yoga = require('yoga-layout');
+const yoga = require('../../../yogajs');
 
 const defaultNode = yoga.Node.create();
 
@@ -140,12 +140,16 @@ export function setYogaValue (node: YogaNode, propertyName: string, value: any) 
   const setter = getYogaPropertyFunction(node, transformer.propertyName, 'set');
 
   if (!(getter && setter)) {
+    // console.debug(`skipped setYogaValue(${propertyName}, ${value});`)    
     return;
   }
+
+  console.warn(`accept setYogaValue(${propertyName}, ${value});`)
 
   const valueToSet = value === undefined ?
     getter.apply(defaultNode, transformer.args()) :
     transformer.transform(value);
 
-  setter.apply(node, transformer.args(valueToSet));
+    
+    setter.apply(node, transformer.args(valueToSet));
 }
